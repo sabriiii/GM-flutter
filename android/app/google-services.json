@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "132164332635",
+    "project_id": "gabmed-bdc16",
+    "storage_bucket": "gabmed-bdc16.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:132164332635:android:c36afff403f27e7db1e37e",
+        "android_client_info": {
+          "package_name": "com.example.gm"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9OZ1MRboM6KvmgJFcXKaMyPUs2Pyd368"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
