@@ -5,11 +5,11 @@
 // }
 import 'package:flutter/material.dart';
 import 'package:gm/components/bottom_nav_bar.dart';
+import 'package:gm/pages/main_page.dart';
+import 'package:gm/pages/rdv_patient_page_.dart';
 
-import 'article_Page.dart';
-import 'doctor_Page.dart';
+import 'article_page.dart';
 import 'help_Page.dart';
-import 'rdv_Page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -32,13 +32,14 @@ class _HomePageState extends State<HomePage> {
   //page to display
   final List<Widget> _pages = [
     //doctor page
-    const DoctorPage(),
+    //const DoctorPage(),
+    const MainPage(),
     //rdv page
-    const RDVPage(),
+    const RDVPaientPage(),
     //help page
     const HelpPage(),
     //Article Page
-    const ArticlePage(),
+    ArticlePage(),
   ];
 
   @override
@@ -80,7 +81,7 @@ class _HomePageState extends State<HomePage> {
               //     color: Color.fromARGB(255, 15, 28, 63),
               //   ),
               // ),
-
+              const SizedBox(height: 48),
               const Padding(
                 padding: EdgeInsets.only(left: 25.0),
                 child: ListTile(
@@ -97,37 +98,41 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
 
-              // const Padding(
-              //   padding: EdgeInsets.only(left: 25.0),
-              //   child: ListTile(
-              //     leading: Icon(
-              //       Icons.home,
-              //       color: Color.fromARGB(255, 15, 28, 63),
-              //     ),
-              //     title: Text(
-              //       'H O M E',
-              //       style: TextStyle(
-              //         color: Color.fromARGB(255, 15, 28, 63),
-              //       ),
-              //     ),
-              //   ),
-              // ),
+              const SizedBox(height: 58),
 
-              // const Padding(
-              //   padding: EdgeInsets.only(left: 25.0),
-              //   child: ListTile(
-              //     leading: Icon(
-              //       Icons.home,
-              //       color: Color.fromARGB(255, 15, 28, 63),
-              //     ),
-              //     title: Text(
-              //       'H O M E',
-              //       style: TextStyle(
-              //         color: Color.fromARGB(255, 15, 28, 63),
-              //       ),
-              //     ),
-              //   ),
-              // )
+              const Padding(
+                padding: EdgeInsets.only(left: 25.0),
+                child: ListTile(
+                  leading: Icon(
+                    Icons.supervised_user_circle,
+                    color: Color.fromARGB(255, 15, 28, 63),
+                  ),
+                  title: Text(
+                    'P R O F I L E',
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 15, 28, 63),
+                    ),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 58),
+
+              const Padding(
+                padding: EdgeInsets.only(left: 25.0),
+                child: ListTile(
+                  leading: Icon(
+                    Icons.logout,
+                    color: Color.fromARGB(255, 15, 28, 63),
+                  ),
+                  title: Text(
+                    'S I G N   O U T',
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 15, 28, 63),
+                    ),
+                  ),
+                ),
+              )
             ],
           )),
       body: _pages[_selectedIndex],

@@ -45,15 +45,31 @@ class LoginPage extends StatelessWidget {
               //Username textfield
 
               MyLoginField(
-                  controller: usernameController,
-                  hintText: 'Username',
-                  obscureText: false),
-              const SizedBox(height: 10),
-              //password textfield
+                controller: usernameController,
+                hintText: 'Password',
+                obscureText: true,
+                icon: Icons.logout,
+              ),
+
+              const SizedBox(height: 25),
+
               MyLoginField(
-                  controller: passwordController,
-                  hintText: 'Password',
-                  obscureText: true),
+                controller: passwordController,
+                hintText: 'Password',
+                obscureText: true,
+                icon: Icons.logout,
+              ),
+
+              // MyLoginField(
+              //     controller: usernameController,
+              //     hintText: 'Username',
+              //     obscureText: false),
+              // const SizedBox(height: 10),
+              // //password textfield
+              // MyLoginField(
+              //     controller: passwordController,
+              //     hintText: 'Password',
+              //     obscureText: true),
               //forgot password
               const SizedBox(height: 10),
               Padding(
@@ -73,6 +89,7 @@ class LoginPage extends StatelessWidget {
               //sign in button
               SignInButton(
                 onTap: signUserIn,
+                text: '',
               ),
               const SizedBox(height: 50),
 

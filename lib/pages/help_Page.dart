@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:gm/components/main_compnent/search_bar_component.dart';
 
 class HelpPage extends StatefulWidget {
   const HelpPage({super.key});
@@ -8,10 +10,11 @@ class HelpPage extends StatefulWidget {
 }
 
 class _HelpPageState extends State<HelpPage> {
+  void handleSearchTap() {}
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Help'),
+    return Center(
+      child: SearchBarComponent(onTap: handleSearchTap),
     );
   }
 }

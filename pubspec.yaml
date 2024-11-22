@@ -37,10 +37,16 @@ dependencies:
   cupertino_icons: ^1.0.8
   get:
   google_nav_bar: ^5.0.6
+  firebase_auth: ^4.0.0
+  firebase_core: ^2.0.0
+  flutter_svg: ^2.0.4
+  image_picker: ^0.8.4+3
+  file_picker: ^5.2.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+    
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
