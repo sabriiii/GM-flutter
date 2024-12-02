@@ -134,8 +134,7 @@ class _MainPageState extends State<MainPage> {
               imageUrl: 'https://example.com/doctor_image.jpg',
               name: "Dr. Marcus Horizon",
               specialty: "Cardiologist",
-              rating: 4.7,
-              distance: "800m away",
+              experience: "800m away",
             ),
           ],
         ),
@@ -193,16 +192,15 @@ class DoctorCard extends StatelessWidget {
   final String imageUrl;
   final String name;
   final String specialty;
-  final double rating;
-  final String distance;
+
+  final String experience;
 
   const DoctorCard({
     super.key,
     required this.imageUrl,
     required this.name,
     required this.specialty,
-    required this.rating,
-    required this.distance,
+    required this.experience,
   });
 
   @override
@@ -250,14 +248,10 @@ class DoctorCard extends StatelessWidget {
                   children: [
                     const Icon(Icons.star, color: Colors.amber, size: 16),
                     const SizedBox(width: 4),
-                    Text(
-                      rating.toString(),
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
                     const SizedBox(width: 16),
                     Icon(Icons.location_on, color: Colors.grey[600], size: 16),
                     const SizedBox(width: 4),
-                    Text(distance),
+                    Text(experience + "years"),
                   ],
                 ),
               ],

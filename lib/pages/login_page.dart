@@ -1,24 +1,113 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:gm/components/login_components.dart';
-import 'package:gm/components/sign_In_Button.dart';
-import 'package:gm/components/square_tile.dart';
+import 'package:gm/components/login_components/login_components.dart';
+import 'package:gm/components/login_components/sign_In_Button.dart';
+import 'package:gm/components/login_components/square_tile.dart';
+import 'package:gm/pages/main_page.dart';
+import 'package:gm/pages/register/register_patient_Page.dart';
+import 'package:http/http.dart' as http;
 
-class LoginPage extends StatelessWidget {
-  LoginPage({super.key});
+class LoginPatientPage extends StatefulWidget {
+  const LoginPatientPage({super.key});
 
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPatientPage> {
   //text editing controllers
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
 
   //sign in method
 
-  void signUserIn() {}
+  void signUserIn() async {
+    if (_validateEmail(usernameController.text) != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Invalid Email"),
+          duration: Duration(seconds: 2),
+        ),
+      );
+
+      return;
+    }
+    if (passwordController.text == "") {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Invalid Password"),
+          duration: Duration(seconds: 2),
+        ),
+      );
+      return;
+    }
+
+    final patientData = {
+      'email': usernameController.text,
+      'password': passwordController.text
+    };
+
+    final jsonData = jsonEncode(patientData);
+    final response = await http.post(
+      Uri.parse('http://10.0.2.2:3000/patient/login'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonData,
+    );
+    final r = jsonDecode(response.body) as Map<String, dynamic>;
+    if (r.containsKey("message")) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(r["message"] ?? ""),
+          duration: Duration(seconds: 2),
+        ),
+      );
+      return;
+    } else if (r.containsKey("id")) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Welcome " + r["name"]),
+          duration: Duration(seconds: 2),
+        ),
+      );
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const MainPage()),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Invalid Credentials"),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
+  }
+
+  String? _validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'This field is required';
+    }
+    if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+      return 'Enter a valid email';
+    }
+    return null;
+  }
+
+  String? _validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'This field is required';
+    }
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.grey[300],
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Center(
           child: Column(
@@ -46,9 +135,9 @@ class LoginPage extends StatelessWidget {
 
               MyLoginField(
                 controller: usernameController,
-                hintText: 'Password',
-                obscureText: true,
-                icon: Icons.logout,
+                hintText: 'Email',
+                obscureText: false,
+                icon: Icons.email,
               ),
 
               const SizedBox(height: 25),
@@ -60,17 +149,6 @@ class LoginPage extends StatelessWidget {
                 icon: Icons.logout,
               ),
 
-              // MyLoginField(
-              //     controller: usernameController,
-              //     hintText: 'Username',
-              //     obscureText: false),
-              // const SizedBox(height: 10),
-              // //password textfield
-              // MyLoginField(
-              //     controller: passwordController,
-              //     hintText: 'Password',
-              //     obscureText: true),
-              //forgot password
               const SizedBox(height: 10),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -144,13 +222,22 @@ class LoginPage extends StatelessWidget {
                     style: TextStyle(color: Colors.grey[700]),
                   ),
                   const SizedBox(width: 4),
-                  Text(
-                    'Register now ',
-                    style: TextStyle(
-                      color: Colors.green[300],
-                      fontWeight: FontWeight.bold,
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => RegisterPatientPage()),
+                      );
+                    },
+                    child: const Text(
+                      'Register here',
+                      style: TextStyle(
+                        color: Colors.teal,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  )
+                  ),
                 ],
               )
             ],

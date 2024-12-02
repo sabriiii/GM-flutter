@@ -32,6 +32,14 @@ class WriteFieldComponent extends StatelessWidget {
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: BorderSide(color: Colors.teal, width: 2),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: BorderSide(color: Colors.grey, width: 1),
+              ),
             ),
           ),
           const SizedBox(height: 16),
@@ -45,11 +53,19 @@ class WriteFieldComponent extends StatelessWidget {
           const SizedBox(height: 8),
           TextField(
             controller: reportController,
-            maxLines: 8,
+            maxLines: 15,
             decoration: InputDecoration(
               hintText: "Write the details of the medical report here...",
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: BorderSide(color: Colors.teal, width: 2),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: BorderSide(color: Colors.grey, width: 1),
               ),
             ),
           ),

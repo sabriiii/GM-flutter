@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
 
 class DoctorCardComponent extends StatelessWidget {
   final String doctorName;
   final String specialty;
-  final String profileImageUrl;
+  final String? profileImageUrl;
 
   final String ville;
 
@@ -31,7 +32,7 @@ class DoctorCardComponent extends StatelessWidget {
             // Doctor's Profile Image
             CircleAvatar(
               radius: 40,
-              backgroundImage: NetworkImage(profileImageUrl),
+              backgroundImage: MemoryImage(base64Decode(profileImageUrl!)),
             ),
             const SizedBox(height: 10),
 
