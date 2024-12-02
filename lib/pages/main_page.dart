@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:gm/components/main_compnent/search_bar_component.dart';
+import 'package:localstorage/localstorage.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -9,6 +12,19 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getPatient();
+  }
+
+  void getPatient() async {
+    await initLocalStorage();
+    final patient = localStorage.getItem("patient");
+    log('data: $patient');
+  }
+
   // Add your logic here (e.g., navigate to another page or show a dialog)
   void handleSearchTap() {}
   // Function to handle click events on categories

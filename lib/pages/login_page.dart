@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:gm/components/login_components/login_components.dart';
 import 'package:gm/components/login_components/sign_In_Button.dart';
 import 'package:gm/components/login_components/square_tile.dart';
+import 'package:gm/pages/intro_page.dart';
 import 'package:gm/pages/main_page.dart';
 import 'package:gm/pages/register/register_patient_Page.dart';
 import 'package:http/http.dart' as http;
+import 'package:localstorage/localstorage.dart';
 
 class LoginPatientPage extends StatefulWidget {
   const LoginPatientPage({super.key});
@@ -65,17 +67,28 @@ class _LoginPageState extends State<LoginPatientPage> {
         ),
       );
       return;
-    } else if (r.containsKey("id")) {
+    } else if (r.containsKey("type")) {
+      await initLocalStorage();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text("Welcome " + r["name"]),
           duration: Duration(seconds: 2),
         ),
       );
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const MainPage()),
-      );
+      if (r["type"] == "patient") {
+        localStorage.setItem('patient', jsonEncode(r));
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const MainPage()),
+        );
+      } else {
+        localStorage.setItem('doctor', jsonEncode(r));
+        //doctor route
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const IntroPage()),
+        );
+      }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

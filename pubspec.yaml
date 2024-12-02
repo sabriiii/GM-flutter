@@ -43,6 +43,7 @@ dependencies:
   image_picker: ^0.8.4+3
   file_picker: ^5.2.2
   http: ^1.2.2
+  localstorage: ^5.0.0
 
 dev_dependencies:
   flutter_test:

@@ -27,13 +27,13 @@ class Gm extends StatelessWidget {
       //home: HomePage(),
       //home: LoginPatientPage(),
       //home: RegisterPatientPage(),
-      home: DoctorPage(),
+      //home: DoctorPage(),
       //home: RDVPaientPage(),
       //home: RDVDoctorPage(),
       //home: RegisterDoctorPage(),
       //home: MainPage(),
       //home: HelpPage(),
-      //home: MedicalReportPage(),
+      home: MedicalReportPage(),
       //home: RegisterCenterPage(),
     );
   }

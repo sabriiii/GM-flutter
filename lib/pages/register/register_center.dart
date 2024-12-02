@@ -61,6 +61,7 @@ class RegisterCenterPageState extends State<RegisterCenterPage> {
     'Cardiothoracic radiology',
     'Nuclear Radiology',
     'MRI',
+    'Laborator'
   ];
   Future<String?> encodeImageToBase64(String? imagePath) async {
     try {

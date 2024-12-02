@@ -8,7 +8,7 @@ import 'package:gm/components/bottom_nav_bar.dart';
 import 'package:gm/pages/main_page.dart';
 import 'package:gm/pages/rdv_patient_page_.dart';
 
-import 'article_page.dart';
+import 'article/article_page.dart';
 import 'help_Page.dart';
 
 class HomePage extends StatefulWidget {

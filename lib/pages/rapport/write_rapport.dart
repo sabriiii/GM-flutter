@@ -1,146 +1,5 @@
-// import 'dart:convert';
-// import 'dart:io';
-// import 'package:flutter/material.dart';
-// import 'package:gm/components/rapport_component/file_component.dart';
-// import 'package:gm/components/rapport_component/write_component_component.dart';
-
-// class MedicalReportPage extends StatefulWidget {
-//   const MedicalReportPage({super.key});
-
-//   @override
-//   State<MedicalReportPage> createState() => _MedicalReportPageState();
-// }
-
-// class _MedicalReportPageState extends State<MedicalReportPage> {
-//   final TextEditingController titleController = TextEditingController();
-//   final TextEditingController reportController = TextEditingController();
-//   String? _selectedFilePath; // Store the imported file path
-//   String? _selectedFileBase64; // Store the Base64-encoded file
-
-//   @override
-//   void dispose() {
-//     // Dispose controllers to prevent memory leaks
-//     titleController.dispose();
-//     reportController.dispose();
-//     super.dispose();
-//   }
-
-//   void saveReport() {
-//     final title = titleController.text;
-//     final report = reportController.text;
-
-//     if (title.isEmpty || report.isEmpty) {
-//       ScaffoldMessenger.of(context).showSnackBar(
-//         const SnackBar(content: Text("Please fill in all fields")),
-//       );
-//       return;
-//     }
-
-//     print("Report Saved:");
-//     print("Title: $title");
-//     print("Report: $report");
-//     if (_selectedFilePath != null) {
-//       print("Attached File: $_selectedFilePath");
-//     }
-//     ScaffoldMessenger.of(context).showSnackBar(
-//       const SnackBar(content: Text("Report saved successfully!")),
-//     );
-//   }
-
-//   Future<void> generateJsonReport() async {
-//     final title = titleController.text;
-//     final report = reportController.text;
-
-//     if (title.isEmpty || report.isEmpty) {
-//       ScaffoldMessenger.of(context).showSnackBar(
-//         const SnackBar(content: Text("Please fill in all fields")),
-//       );
-//       return;
-//     }
-
-//     String? fileBase64;
-//     if (_selectedFilePath != null) {
-//       final fileBytes = await File(_selectedFilePath!).readAsBytes();
-//       fileBase64 = base64Encode(fileBytes);
-//     }
-
-//     final jsonObject = {
-//       'title': title,
-//       'report': report,
-//       'fileBase64': fileBase64,
-//     };
-
-//     print('Generated JSON Report:');
-//     print(jsonEncode(jsonObject));
-
-//     ScaffoldMessenger.of(context).showSnackBar(
-//       const SnackBar(content: Text("JSON Report generated successfully!")),
-//     );
-//   }
-
-//   void handleFilePicked(String? filePath) {
-//     setState(() {
-//       _selectedFilePath = filePath;
-//     });
-
-//     if (filePath != null) {
-//       ScaffoldMessenger.of(context).showSnackBar(
-//         SnackBar(content: Text('File selected: $filePath')),
-//       );
-//     } else {
-//       ScaffoldMessenger.of(context).showSnackBar(
-//         const SnackBar(content: Text('No file selected')),
-//       );
-//     }
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text("Write Medical Report"),
-//         actions: [
-//           IconButton(
-//             icon: const Icon(Icons.save),
-//             onPressed: saveReport,
-//           ),
-//         ],
-//       ),
-//       body: SingleChildScrollView(
-//         padding: const EdgeInsets.all(16.0),
-//         child: Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             WriteFieldComponent(
-//               titleController: titleController,
-//               reportController: reportController,
-//             ),
-//             const SizedBox(height: 20),
-//             ImportDocumentButton(),
-//             const SizedBox(height: 10),
-//             if (_selectedFilePath != null)
-//               Text(
-//                 'Selected File: $_selectedFilePath',
-//                 style: const TextStyle(fontSize: 16),
-//               ),
-//             const SizedBox(height: 20),
-//             ElevatedButton.icon(
-//               onPressed: generateJsonReport,
-//               icon: const Icon(Icons.file_copy),
-//               label: const Text('Generate JSON Report'),
-//               style: ElevatedButton.styleFrom(
-//                 backgroundColor: Colors.teal,
-//                 padding:
-//                     const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:gm/components/rapport_component/file_component.dart';
@@ -156,24 +15,54 @@ class MedicalReportPage extends StatefulWidget {
 class _MedicalReportPageState extends State<MedicalReportPage> {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController reportController = TextEditingController();
-  String? _selectedFilePath; // Store the imported file path
-  String? _selectedFileBase64; // Store the Base64-encoded file
+  final TextEditingController patientIdController = TextEditingController();
+  final TextEditingController patientNameController = TextEditingController();
+  final TextEditingController patientSurnameController =
+      TextEditingController();
 
+  final List<Map<String, String>> _selectedFiles = [];
   @override
   void dispose() {
     // Dispose controllers to prevent memory leaks
     titleController.dispose();
     reportController.dispose();
+    patientIdController.dispose();
+    patientNameController.dispose();
+    patientSurnameController.dispose();
     super.dispose();
   }
 
   void saveReport() {
     final title = titleController.text;
     final report = reportController.text;
+    final patient_name = patientNameController.text;
+    final patient_surname = patientSurnameController.text;
+    final patient_id = patientIdController.text;
 
-    if (title.isEmpty || report.isEmpty) {
+    if (title.isEmpty ||
+        report.isEmpty ||
+        patient_name.isEmpty ||
+        patient_surname.isEmpty ||
+        patient_id.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Please fill in all fields")),
+        SnackBar(
+          content: const Text(
+            "Please fill in all fields",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          padding: const EdgeInsets.all(18),
+          duration: const Duration(seconds: 2),
+          backgroundColor: Colors.red[300],
+          behavior: SnackBarBehavior.floating,
+          margin: const EdgeInsets.all(16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
       );
       return;
     }
@@ -181,19 +70,45 @@ class _MedicalReportPageState extends State<MedicalReportPage> {
     print("Report Saved:");
     print("Title: $title");
     print("Report: $report");
-    if (_selectedFilePath != null) {
-      print("Attached File: $_selectedFilePath");
+    print("Patient: $patient_name $patient_surname (ID: $patient_id)");
+    if (_selectedFiles.isNotEmpty) {
+      print(
+          "Attached File: ${_selectedFiles.map((file) => file['name']).toList()}");
     }
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Report saved successfully!")),
+      SnackBar(
+        content: Text(
+          "Report saved successfully!",
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        padding: const EdgeInsets.all(18),
+        duration: const Duration(seconds: 2),
+        backgroundColor: Colors.teal[300],
+        behavior: SnackBarBehavior.floating,
+        margin: const EdgeInsets.all(16),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
     );
   }
 
   Future<void> generateJsonReport() async {
     final title = titleController.text;
     final report = reportController.text;
+    final patient_name = patientNameController.text;
+    final patient_surname = patientSurnameController.text;
+    final patient_id = patientIdController.text;
 
-    if (title.isEmpty || report.isEmpty) {
+    if (title.isEmpty ||
+        report.isEmpty ||
+        patient_name.isEmpty ||
+        patient_surname.isEmpty ||
+        patient_id.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Please fill in all fields")),
       );
@@ -201,66 +116,83 @@ class _MedicalReportPageState extends State<MedicalReportPage> {
     }
 
     final jsonObject = {
+      'patient name': patient_name,
+      'patient surname': patient_surname,
+      'patient id': patient_id,
       'title': title,
       'report': report,
-      'fileBase64': _selectedFileBase64, // Include Base64-encoded file
+
+      'files': _selectedFiles, // List of selected files with Base64
     };
 
     print('Generated JSON Report:');
-    print(jsonEncode(jsonObject));
 
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text("JSON Report generated successfully!")),
     );
   }
 
-  void handleFileSelected(Map<String, String> fileInfo) async {
-    final filePath = fileInfo['path'];
+  void handleFileSelected(List<Map<String, String>> files) async {
+    final updatedFiles = await Future.wait(files.map((fileInfo) async {
+      final base64String = fileInfo['base64'];
+      final fileName = fileInfo['name'];
 
-    if (filePath != null) {
-      final fileBytes = await File(filePath).readAsBytes();
-      final base64String = base64Encode(fileBytes);
+      return {'name': fileName!, 'base64': base64String!};
+    })); // Filter out null entries
 
-      setState(() {
-        _selectedFilePath = filePath;
-        _selectedFileBase64 = base64String; // Set the Base64 string
-      });
+    setState(() {
+      _selectedFiles.clear();
+      _selectedFiles.addAll(updatedFiles.cast<Map<String, String>>());
+    });
+    log(jsonEncode(_selectedFiles.map((e) {
+      return e["name"];
+    }).toList()));
+    showSnackbar(
+      '${files.length} file(s) selected and processed',
+    );
+  }
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('File selected: ${fileInfo['name']}')),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('No file selected')),
-      );
-    }
+  void showSnackbar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          message,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        duration: const Duration(seconds: 2),
+        padding: const EdgeInsets.all(18),
+        backgroundColor: Colors.teal[300],
+        behavior: SnackBarBehavior.floating,
+        margin: const EdgeInsets.all(16),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Write Medical Report"),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.save),
-            onPressed: saveReport,
-          ),
-        ],
-      ),
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(8.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             WriteFieldComponent(
-              titleController: titleController,
-              reportController: reportController,
-            ),
+                titleController: titleController,
+                reportController: reportController,
+                patientIdController: patientIdController,
+                patientSurnameController: patientSurnameController,
+                patientNameController: patientNameController),
             const SizedBox(height: 20),
             ImportDocumentButton(
-              onFileSelected:
-                  handleFileSelected, // Use the method to handle file selection
+              onFilesSelected: handleFileSelected,
             ),
             const SizedBox(height: 10),
             const SizedBox(height: 20),
